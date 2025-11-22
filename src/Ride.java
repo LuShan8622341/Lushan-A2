@@ -1,6 +1,4 @@
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 public class Ride implements RideInterface {
     private String rideName;
@@ -130,5 +128,9 @@ public class Ride implements RideInterface {
     @Override
     public void runOneCycle() {
 
+    }
+
+    public void sortRideHistory(Comparator<Visitor> comparator) {
+        Collections.sort(rideHistory, comparator);
     }
 }
