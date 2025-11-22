@@ -1,3 +1,4 @@
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -7,6 +8,7 @@ public class Ride implements RideInterface {
     private boolean isOpen;
     private Employee operator;
     private Queue<Visitor> visitorQueue = new LinkedList<>();
+    private LinkedList<Visitor> rideHistory = new LinkedList<>();
 
     public Ride() {}
 
@@ -63,7 +65,7 @@ public class Ride implements RideInterface {
     public void addVisitorToQueue(Visitor visitor) {
         if (visitor != null) {
             visitorQueue.add(visitor);
-            System.out.println(visitor.getFirstName() + " " + visitor.getLastName() + " has joined the ride.");
+            System.out.println(visitor.getFirstName() + " " + visitor.getLastName() + " has joined the ride[" + this.getRideName() + "].");
         } else {
             System.out.println("Failed to join, visitor not exist.");
         }
@@ -73,7 +75,7 @@ public class Ride implements RideInterface {
     public void removeVisitorFromQueue(Visitor visitor) {
         if (visitorQueue.contains(visitor)) {
             visitorQueue.remove(visitor);
-            System.out.println(visitor.getFirstName() + " " + visitor.getLastName() +  " has left the ride.");
+            System.out.println(visitor.getFirstName() + " " + visitor.getLastName() +  " has left the ride[" + this.getRideName() + "].");
         } else {
             System.out.println("Visitor is not in the queue.");
         }
@@ -93,22 +95,36 @@ public class Ride implements RideInterface {
 
     @Override
     public void addVisitorToHistory(Visitor visitor) {
-
+        if (visitor != null) {
+            rideHistory.add(visitor);
+            System.out.println(visitor.getFirstName() + " " + visitor.getLastName()  + " added to the ride[" + this.getRideName() + "] history.");
+        } else {
+            System.out.println("Failed to add. visitor not exist.");
+        }
     }
 
     @Override
     public boolean checkVisitorFromHistory(Visitor visitor) {
-        return false;
+        return rideHistory.contains(visitor);
     }
 
     @Override
     public int numberOfVisitors() {
-        return 0;
+        return rideHistory.size();
     }
 
     @Override
     public void printRideHistory() {
-
+        if (rideHistory.isEmpty()) {
+            System.out.println("The ride has no history visitors.");
+        } else {
+            System.out.println(rideName + " History Visitor List:");
+            Iterator<Visitor> iterator = rideHistory.iterator();
+            while (iterator.hasNext()) {
+                Visitor visitor = iterator.next();
+                System.out.println(visitor);
+            }
+        }
     }
 
     @Override
