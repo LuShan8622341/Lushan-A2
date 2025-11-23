@@ -45,6 +45,9 @@ public class AssignmentTwo {
 
         System.out.println("\nPart Six:");
         assignmentTwo.partSix();
+
+        System.out.println("\nPart Seven:");
+        assignmentTwo.partSeven();
     }
 
     public void partThree(){
@@ -254,5 +257,13 @@ public class AssignmentTwo {
     }
 
     public void partSeven(){
+        // create employees
+        Employee e1 = new Employee("ID10001", "John", "Doe", new Date(), "Male", "0400 111 222", "john.doe@email.com", "Gold Coast, Australia", "EMP001", "Operations", "Roller Coaster Operator", 55000.0, new Date());
+        // create rides
+        Ride ride = new Ride("Superman Escape", 1.4, true, e1, 5);
+        // import from csv
+        ride.importRideHistory("RideHistory.csv");
+        // print history
+        ride.printRideHistory();
     }
 }

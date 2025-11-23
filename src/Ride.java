@@ -1,6 +1,6 @@
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Ride implements RideInterface {
@@ -8,11 +8,12 @@ public class Ride implements RideInterface {
     private double minHeight;
     private boolean isOpen;
     private Employee operator;
-    private Queue<Visitor> visitorQueue = new LinkedList<>();
-    private LinkedList<Visitor> rideHistory = new LinkedList<>();
-    private int maxRider;
-    private int numOfCycles = 0;
+    private Queue<Visitor> visitorQueue = new LinkedList<>(); // Queue of visitors waiting
+    private LinkedList<Visitor> rideHistory = new LinkedList<>(); // History of visitors who have ridden
+    private int maxRider; // Maximum number of riders per cycle
+    private int numOfCycles = 0; // Total cycles the ride has completed
 
+    // Constructors
     public Ride() {}
 
     public Ride(String rideName, double minHeight, boolean isOpen, Employee operator, int maxRider) {
@@ -20,6 +21,8 @@ public class Ride implements RideInterface {
         this.minHeight = minHeight;
         this.isOpen = isOpen;
         this.operator = operator;
+
+        // Ensure maxRider is valid
         if (maxRider >= 1) {
             this.maxRider = maxRider;
         } else {
@@ -27,6 +30,7 @@ public class Ride implements RideInterface {
         }
     }
 
+    // Getters and Setters
     public String getRideName() {
         return rideName;
     }
@@ -89,6 +93,7 @@ public class Ride implements RideInterface {
                 '}';
     }
 
+    // Add a visitor to the waiting queue
     @Override
     public void addVisitorToQueue(Visitor visitor) {
         if (visitor != null) {
@@ -99,6 +104,7 @@ public class Ride implements RideInterface {
         }
     }
 
+    // Remove a visitor from the queue
     @Override
     public void removeVisitorFromQueue(Visitor visitor) {
         if (visitorQueue.contains(visitor)) {
@@ -109,6 +115,7 @@ public class Ride implements RideInterface {
         }
     }
 
+    // Print the current queue of visitors
     @Override
     public void printQueue() {
         if (visitorQueue.isEmpty()) {
@@ -121,6 +128,7 @@ public class Ride implements RideInterface {
         }
     }
 
+    // Add a visitor into the ride history list
     @Override
     public void addVisitorToHistory(Visitor visitor) {
         if (visitor != null) {
@@ -131,16 +139,19 @@ public class Ride implements RideInterface {
         }
     }
 
+    // Check if a visitor exists in ride history
     @Override
     public boolean checkVisitorFromHistory(Visitor visitor) {
         return rideHistory.contains(visitor);
     }
 
+    // Get number of visitors in ride history
     @Override
     public int numberOfVisitors() {
         return rideHistory.size();
     }
 
+    // Print all past visitors in the ride history
     @Override
     public void printRideHistory() {
         if (rideHistory.isEmpty()) {
@@ -155,6 +166,7 @@ public class Ride implements RideInterface {
         }
     }
 
+    // Run a ride cycle, loading up to maxRider visitors
     @Override
     public void runOneCycle() {
         if (operator == null) {
@@ -167,9 +179,13 @@ public class Ride implements RideInterface {
         }
         System.out.println("The ride[" + rideName + "] start running!");
         int curRiderNum = 0;
+
+        // Load visitors until max capacity reached
         while (!visitorQueue.isEmpty() && curRiderNum < maxRider) {
-            Visitor visitor = visitorQueue.peek();
-            removeVisitorFromQueue(visitor);
+            Visitor visitor = visitorQueue.peek();  // Get first visitor in queue
+            removeVisitorFromQueue(visitor); // Remove from queue
+
+            // Only add if the visitor hasn't been recorded before
             if (!checkVisitorFromHistory(visitor)) {
                 addVisitorToHistory(visitor);
             }
@@ -179,15 +195,19 @@ public class Ride implements RideInterface {
         System.out.println("The ride[" + rideName + "] run end!, " + curRiderNum + " visitors in this cycle, total cycles:" + numOfCycles);
     }
 
+    // Sort ride history using a custom comparator
     public void sortRideHistory(Comparator<Visitor> comparator) {
         Collections.sort(rideHistory, comparator);
     }
 
+    // Export ride history to a CSV file
     public void exportRideHistory(String filename) {
         BufferedWriter writer = null;
         try {
             writer = new BufferedWriter(new FileWriter(filename));
+            // Write CSV header
             writer.write("idNumber,firstName,lastName,birthday,gender,phoneNumber,email,address,visitorId,ticketType,entryDate,hasPaid,visitCount\n");
+            // Write each visitor as a CSV row
             for (Visitor visitor : rideHistory) {
                 writer.write(visitor.getIdNumber() + "," + visitor.getFirstName() + "," + visitor.getLastName() + "," + visitor.getBirthday() + ","
                         + visitor.getGender() + "," + visitor.getPhoneNumber() + "," + visitor.getEmail() + "," + visitor.getAddress() + ","
@@ -201,6 +221,62 @@ public class Ride implements RideInterface {
             try {
                 if (writer != null) {
                     writer.close();
+                }
+            } catch (IOException e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+        }
+    }
+
+    // Import ride history from CSV file
+    public void importRideHistory(String filename) {
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new FileReader(filename));
+            String row;
+            reader.readLine(); // Skip header row
+            int count = 0;
+
+            // Read each line and parse into Visitor
+            while ((row = reader.readLine()) != null) {
+                // Split using regex to avoid splitting city, country incorrectly
+                String[] visitorInfoArr = row.split(",(?! )");
+                if (visitorInfoArr.length == 13) {
+                    // Parse date format used by Date.toString()
+                    SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
+                    // Extract each field
+                    String idNumber = visitorInfoArr[0];
+                    String firstName = visitorInfoArr[1];
+                    String lastName = visitorInfoArr[2];
+                    Date birthday = sdf.parse(visitorInfoArr[3]);
+                    String gender = visitorInfoArr[4];
+                    String phoneNumber = visitorInfoArr[5];
+                    String email = visitorInfoArr[6];
+                    String address = visitorInfoArr[7];
+                    String visitorId = visitorInfoArr[8];
+                    String ticketType = visitorInfoArr[9];
+                    Date entryDate = sdf.parse(visitorInfoArr[10]);
+                    boolean hasPaid = Boolean.parseBoolean(visitorInfoArr[11]);
+                    int visitCount = Integer.parseInt(visitorInfoArr[12]);
+                    // Create Visitor object and add to history
+                    Visitor visitor = new Visitor(idNumber, firstName, lastName, birthday, gender, phoneNumber, email, address, visitorId, ticketType, entryDate, hasPaid, visitCount);
+                    rideHistory.add(visitor);
+                    count++;
+                } else {
+                    System.out.println("Missing visitor info fields: " + row);
+                }
+            }
+            System.out.println(filename + " has been imported, " + count + " visitors has been add to history.");
+        } catch (IOException e) {
+            System.out.println("Error: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            System.out.println("Error: " + e.getMessage());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (reader != null) {
+                    reader.close();
                 }
             } catch (IOException e) {
                 System.out.println("Error: " + e.getMessage());
