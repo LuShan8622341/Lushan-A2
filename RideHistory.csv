@@ -1,0 +1,16 @@
+idNumber,firstName,lastName,birthday,gender,phoneNumber,email,address,visitorId,ticketType,entryDate,hasPaid,visitCount
+ID20001,Alice,Smith,Sun Nov 23 10:48:23 CST 2025,Female,0466 555 666,alice@email.com,Brisbane, Australia,VIS001,VIP,Sun Nov 23 10:48:23 CST 2025,true,3
+ID20002,Bob,Brown,Sun Nov 23 10:48:23 CST 2025,Male,0466 777 888,bob@email.com,Melbourne, Australia,VIS002,Standard,Sun Nov 23 10:48:23 CST 2025,true,1
+ID20003,Charlie,Green,Sun Nov 23 10:48:23 CST 2025,Male,0466 999 000,charlie@email.com,Sydney, Australia,VIS003,VIP,Sun Nov 23 10:48:23 CST 2025,true,2
+ID20004,Diana,White,Sun Nov 23 10:48:23 CST 2025,Female,0466 222 333,diana@email.com,Adelaide, Australia,VIS004,Standard,Sun Nov 23 10:48:23 CST 2025,true,1
+ID20005,Ethan,Black,Sun Nov 23 10:48:23 CST 2025,Male,0466 444 555,ethan@email.com,Perth, Australia,VIS005,VIP,Sun Nov 23 10:48:23 CST 2025,true,4
+ID20006,Fiona,Blue,Sun Nov 23 10:48:23 CST 2025,Female,0470 123 456,fiona@email.com,Gold Coast, Australia,VIS006,Standard,Sun Nov 23 10:48:23 CST 2025,false,2
+ID20007,George,Silver,Sun Nov 23 10:48:23 CST 2025,Male,0499 234 567,george@email.com,Sunshine Coast, Australia,VIS007,VIP,Sun Nov 23 10:48:23 CST 2025,true,5
+ID20008,Hannah,Rose,Sun Nov 23 10:48:23 CST 2025,Female,0471 345 678,hannah@email.com,Darwin, Australia,VIS008,Standard,Sun Nov 23 10:48:23 CST 2025,true,1
+ID20009,Ian,Gray,Sun Nov 23 10:48:23 CST 2025,Male,0469 456 789,ian@email.com,Canberra, Australia,VIS009,VIP,Sun Nov 23 10:48:23 CST 2025,false,3
+ID20010,Jenny,Gold,Sun Nov 23 10:48:23 CST 2025,Female,0477 567 890,jenny@email.com,Cairns, Australia,VIS010,Standard,Sun Nov 23 10:48:23 CST 2025,true,2
+ID20011,Kevin,Iron,Sun Nov 23 10:48:23 CST 2025,Male,0468 678 901,kevin@email.com,Hobart, Australia,VIS011,VIP,Sun Nov 23 10:48:23 CST 2025,true,1
+ID20012,Lily,Pearl,Sun Nov 23 10:48:23 CST 2025,Female,0480 789 012,lily@email.com,Newcastle, Australia,VIS012,Standard,Sun Nov 23 10:48:23 CST 2025,false,4
+ID20013,Mark,Copper,Sun Nov 23 10:48:23 CST 2025,Male,0466 890 123,mark@email.com,Townsville, Australia,VIS013,VIP,Sun Nov 23 10:48:23 CST 2025,true,2
+ID20014,Natalie,Brown,Sun Nov 23 10:48:23 CST 2025,Female,0455 901 234,natalie@email.com,Wollongong, Australia,VIS014,Standard,Sun Nov 23 10:48:23 CST 2025,true,3
+ID20015,Oscar,Ivory,Sun Nov 23 10:48:23 CST 2025,Male,0476 012 345,oscar@email.com,Geelong, Australia,VIS015,VIP,Sun Nov 23 10:48:23 CST 2025,false,1

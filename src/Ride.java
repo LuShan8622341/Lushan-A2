@@ -1,3 +1,6 @@
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
 public class Ride implements RideInterface {
@@ -178,5 +181,30 @@ public class Ride implements RideInterface {
 
     public void sortRideHistory(Comparator<Visitor> comparator) {
         Collections.sort(rideHistory, comparator);
+    }
+
+    public void exportRideHistory(String filename) {
+        BufferedWriter writer = null;
+        try {
+            writer = new BufferedWriter(new FileWriter(filename));
+            writer.write("idNumber,firstName,lastName,birthday,gender,phoneNumber,email,address,visitorId,ticketType,entryDate,hasPaid,visitCount\n");
+            for (Visitor visitor : rideHistory) {
+                writer.write(visitor.getIdNumber() + "," + visitor.getFirstName() + "," + visitor.getLastName() + "," + visitor.getBirthday() + ","
+                        + visitor.getGender() + "," + visitor.getPhoneNumber() + "," + visitor.getEmail() + "," + visitor.getAddress() + ","
+                        + visitor.getVisitorId() + "," + visitor.getTicketType() + "," + visitor.getEntryDate() + "," + visitor.isHasPaid() + ","
+                        + visitor.getVisitCount() + "\n");
+            }
+            System.out.println("File exported to: " + filename);
+        } catch (IOException e) {
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            try {
+                if (writer != null) {
+                    writer.close();
+                }
+            } catch (IOException e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+        }
     }
 }
