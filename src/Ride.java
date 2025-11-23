@@ -7,14 +7,21 @@ public class Ride implements RideInterface {
     private Employee operator;
     private Queue<Visitor> visitorQueue = new LinkedList<>();
     private LinkedList<Visitor> rideHistory = new LinkedList<>();
+    private int maxRider;
+    private int numOfCycles = 0;
 
     public Ride() {}
 
-    public Ride(String rideName, double minHeight, boolean isOpen, Employee operator) {
+    public Ride(String rideName, double minHeight, boolean isOpen, Employee operator, int maxRider) {
         this.rideName = rideName;
         this.minHeight = minHeight;
         this.isOpen = isOpen;
         this.operator = operator;
+        if (maxRider >= 1) {
+            this.maxRider = maxRider;
+        } else {
+            System.out.println("Failed to set maxRider, the value needs to be greater than 1.");
+        }
     }
 
     public String getRideName() {
@@ -47,6 +54,26 @@ public class Ride implements RideInterface {
 
     public void setOperator(Employee operator) {
         this.operator = operator;
+    }
+
+    public int getMaxRider() {
+        return maxRider;
+    }
+
+    public void setMaxRider(int maxRider) {
+        if (maxRider >= 1) {
+            this.maxRider = maxRider;
+        } else {
+            System.out.println("Failed to set maxRider, the value needs to be greater than 1.");
+        }
+    }
+
+    public int getNumOfCycles() {
+        return numOfCycles;
+    }
+
+    public void setNumOfCycles(int numOfCycles) {
+        this.numOfCycles = numOfCycles;
     }
 
     @Override
@@ -127,7 +154,26 @@ public class Ride implements RideInterface {
 
     @Override
     public void runOneCycle() {
-
+        if (operator == null) {
+            System.out.println("Operator not exist.");
+            return;
+        }
+        if (visitorQueue.isEmpty()) {
+            System.out.println("The ride has no visitors.");
+            return;
+        }
+        System.out.println("The ride[" + rideName + "] start running!");
+        int curRiderNum = 0;
+        while (!visitorQueue.isEmpty() && curRiderNum < maxRider) {
+            Visitor visitor = visitorQueue.peek();
+            removeVisitorFromQueue(visitor);
+            if (!checkVisitorFromHistory(visitor)) {
+                addVisitorToHistory(visitor);
+            }
+            curRiderNum++;
+        }
+        numOfCycles++;
+        System.out.println("The ride[" + rideName + "] run end!, " + curRiderNum + " visitors in this cycle, total cycles:" + numOfCycles);
     }
 
     public void sortRideHistory(Comparator<Visitor> comparator) {
